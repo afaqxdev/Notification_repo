@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:notification/app_notifications.dart';
 
 void main() {
   runApp(const MyApp());
+  AppNotifications appNotifications = AppNotifications();
+  appNotifications.requestNotificationsPermissions();
+  appNotifications.foregroundMessage();
 }
 
 class MyApp extends StatelessWidget {
@@ -31,11 +35,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final int _counter = 0;
+  AppNotifications appNotifications = AppNotifications();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  void notification() {
+    // call in splash screen for request permision and forground messages
+    appNotifications.firebaseNotificationsInitialization(context);
+    appNotifications.setUpInteractMessage(context);
+    appNotifications.getDeviceToken().then((value) {
+      print(value);
     });
   }
 
@@ -61,8 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: notification,
+        tooltip: 'notification',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
