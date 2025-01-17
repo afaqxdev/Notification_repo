@@ -1,0 +1,33 @@
+Configure iOS for Push Notifications
+
+Enable Push Notifications in Xcode:
+
+Open your project in Xcode.
+
+Go to the Signing & Capabilities tab.
+
+Click + Capability and add Push Notifications.
+
+Enable Background Modes:
+
+In the same Signing & Capabilities tab, add Background Modes.
+
+Enable Remote notifications.
+
+Generate an APNs Authentication Key:
+
+Go to the Apple Developer Portal.
+
+Navigate to Certificates, Identifiers & Profiles > Keys.
+
+Create a new key with Apple Push Notifications service (APNs) enabled.
+
+Download the .p8 file and note the Key ID and Team ID.
+
+Upload APNs Key to Firebase:
+
+Go to your Firebase Console.
+
+Navigate to Project Settings > Cloud Messaging.
+
+Under iOS app configuration, upload the .p8 file and enter the Key ID and Team ID.
