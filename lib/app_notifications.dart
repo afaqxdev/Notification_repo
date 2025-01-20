@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
-
 import 'dart:developer' as dev;
 import 'dart:io';
 import 'dart:math';
@@ -59,6 +57,38 @@ class AppNotifications {
       alert: true,
       badge: true,
       sound: true,
+    );
+  }
+
+  showLocalNotification({
+    required int id,
+    required String title,
+    required String body,
+    String? payload,
+  }) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails('basic_channel', 'Taxi_Finder',
+            importance: Importance.max,
+            priority: Priority.high,
+            enableVibration: true);
+
+    // iOS notification details
+    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
+        DarwinNotificationDetails();
+
+    // Combined notification details
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    // Show the notification
+    await flutterLocalNotifications.show(
+      id,
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: payload,
     );
   }
 
@@ -148,19 +178,20 @@ class AppNotifications {
       // android: androidNormalNotificationDetails,
       iOS: iosNotificationDetails,
     );
-    Future.delayed(Duration.zero, () {
-      flutterLocalNotifications.show(
-        0,
-        remoteMessage.notification!.title.toString(),
-        remoteMessage.notification!.body.toString(),
-        notificationDetails,
-      );
-    });
+    // Future.delayed(Duration.zero, () {
+    await flutterLocalNotifications.show(
+      0,
+      remoteMessage.notification!.title.toString(),
+      remoteMessage.notification!.body.toString(),
+      notificationDetails,
+    );
+    // });
   }
 
   /// to show notification
   void firebaseNotificationsInitialization(BuildContext context) {
     FirebaseMessaging.onMessage.listen((notificationMessage) {
+      dev.log("on message listner called ");
       if (Platform.isIOS) {
         initLocalNotifications(context, notificationMessage);
         foregroundMessage();

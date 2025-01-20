@@ -31,3 +31,12 @@ Go to your Firebase Console.
 Navigate to Project Settings > Cloud Messaging.
 
 Under iOS app configuration, upload the .p8 file and enter the Key ID and Team ID.
+
+
+for Android 
+We first add permission for 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+in AndroidManifest 
+
+second we add  app level gridle in dependencies 
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'

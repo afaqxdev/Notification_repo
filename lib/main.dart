@@ -1,10 +1,24 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:notification/app_notifications.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  AppNotifications appNotifications = AppNotifications();
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  final title = message.notification?.title ?? "";
+  final body = message.notification?.body ?? "";
+  await appNotifications.showLocalNotification(
+      title: title, body: body, id: 10);
+}
 
 void main() {
   runApp(const MyApp());
   AppNotifications appNotifications = AppNotifications();
   appNotifications.requestNotificationsPermissions();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   appNotifications.foregroundMessage();
 }
 
